@@ -1,7 +1,7 @@
 import {store} from "../store/store";
 import {v4} from "uuid";
 import {setAuth, setUser} from "../store/reducer/user.reducer";
-import {newGame, setData} from "../store/reducer/game.reducer";
+import {newGame, setChoose, setData} from "../store/reducer/game.reducer";
 export const ws = new WebSocket(`ws://localhost:5000/app/connect/`);
 
 export const wsSend = function(data: string) {
@@ -27,6 +27,10 @@ export const createRoom = (username: string, id: string) => {
   }))
 }
 
+export const clearState = () => {
+  store.dispatch(setChoose())
+  store.dispatch(newGame())
+}
 
 export const sendChoice = (id: string, room:string | undefined, choice:string = 'stone') => {
   store.dispatch(newGame())
@@ -93,9 +97,16 @@ ws.onmessage = (ev) => {
       console.log(data.message)
       break
     }
-    case 'choice': {
-      store.dispatch(setData({me: data.me, enemy: data.enemy}))
+    case 'choose': {
+      store.dispatch(setChoose())
+      break
     }
+    case 'choice': {
+      const {enemy, me} = data.data
+      store.dispatch(setData({me, enemy}))
+      break
+    }
+
   }
 
 }

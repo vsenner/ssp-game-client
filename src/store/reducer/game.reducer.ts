@@ -2,13 +2,15 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface Game {
   me: string,
-  enemy: string
+  enemy: string,
+  choose?: boolean
 }
 
 
-const initialState = {
+const initialState:Game = {
   me: '',
-  enemy: ''
+  enemy: '',
+  choose: false
 }
 
 const gameReducer = createSlice({
@@ -16,16 +18,18 @@ const gameReducer = createSlice({
   initialState,
   reducers: {
     setData: (state, payload:PayloadAction<Game>) => {
-      state = payload.payload
+      state.me = payload.payload.me
+      state.enemy = payload.payload.enemy
     },
     newGame: (state) => {
-      state = {
-        me:'',
-        enemy:''
-      }
-    }
+      state.me = ''
+      state.enemy = ''
+    },
+    setChoose: (state) => {
+      state.choose = !state.choose
+    },
   }
 })
 
 export default gameReducer.reducer
-export const {setData, newGame} = gameReducer.actions
+export const {setData, newGame, setChoose} = gameReducer.actions

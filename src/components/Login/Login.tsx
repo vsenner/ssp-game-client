@@ -3,7 +3,6 @@ import {v4} from "uuid";
 import {connectToGame, createRoom} from "../../ws";
 
 const Login: FC = () => {
-
   const [login, setLogin] = useState<boolean>(false)
   const [room, setRoom] = useState<string>('')
   const [status, setStatus] = useState<boolean>(true)
